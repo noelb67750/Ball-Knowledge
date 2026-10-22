@@ -1,26 +1,16 @@
-/*
-noel baca
 
-this app can directly use backed features when in the
-same package.
-*/
 package ballknowledge;
 
 // javalin for the serverside logic
 import io.javalin.Javalin;
 
-//import map in order to return a json object
+
 import java.util.Map;
 
-/*
-this is the class that will
-run the server side
-*/
 public class App {
     public static void main(String[] args)
         {
         // creates server object
-        //and starts it on port 7070 because its the default port
         Javalin app = Javalin.create().start(7070);
         
         /*
