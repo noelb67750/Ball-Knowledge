@@ -1,0 +1,37 @@
+<project>
+
+<modelVersion>4.0.0</modelVersion>
+<groupId>ballknowledge</groupId>
+<artifactId>backend</artifactId>
+<version>0.1.0</version>
+
+<dependencies>
+  <dependency>
+    <groupId>io.javalin</groupId>
+    <artifactId>javalin</artifactId>
+    <version>6.3.0</version>   <!-- USE 6.3.0 NOT VERSION 7. JAVALIN 7 CODE IS DIFFERENT--> 
+
+  </dependency>
+
+       <dependency>
+       <groupId>com.fasterxml.jackson.core</groupId>
+       <!-- "databind comverts a java objrct to json and back  -->
+       <artifactId>jackson-databind</artifactId> <!--  java library to convert Java objects to JSON -->
+       <version>2.17.2</version> 
+     </dependency>
+
+     <!-- slf4j-simple because without it the server logs go nowhere -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
+      <!-- We use 2.0.16 because it matches the slf4j-api version Javalin -->
+      <version>2.0.16</version>
+    </dependency>
+
+</dependencies>
+
+<properties>
+    <maven.compiler.release>17</maven.compiler.release> <!-- java version -->
+  </properties>
+</project>
+
