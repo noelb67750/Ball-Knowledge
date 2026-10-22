@@ -1,9 +1,10 @@
-import { useState } from 'react'
-import './App.css'
+import { useState } from "react";
+import "./App.css";
 
 function App() {
-  const [teams, setTeams] = useState(3)
-  const [rounds, setRounds] = useState(10)
+  const [teams, setTeams] = useState(3);
+  const [rounds, setRounds] = useState(10);
+  const [budget, setBudget] = useState(200);
 
   return (
     <>
@@ -15,34 +16,36 @@ function App() {
         <h2>Draft Settings</h2>
         <p>Number of Teams: {teams}</p>
 
-        <button onClick={() => setTeams(teams + 1)}>
-        Add Team
-        </button>
-        
-        <button onClick={() => 
-          {
-            if (teams > 2) {
-              setTeams(teams - 1);
-            }
-          }}>
+        {/* Allows you to change the number of teams, (minimium 2) */}
+
+        <button onClick={() => setTeams(teams + 1)}>Add Team</button>
+
+        <button disabled={teams <= 2} onClick={() => setTeams(teams - 1)}>
           Remove Team
         </button>
 
         <h2>Number of Rounds: {rounds}</h2>
-        <button onClick={() => setRounds(rounds + 1)}>
-          + 
+
+        {/* ALlows you to change the number of rounds (minimim 1) */}
+
+        <button onClick={() => setRounds(rounds + 1)}>+</button>
+
+        <button disabled={rounds <= 1} onClick={() => setRounds(rounds - 1)}>
+          -
         </button>
 
-        <button 
-        disabled={rounds <= 1}
-        onClick={() => setRounds(rounds - 1)}>
-            -
-          </button>
+        <h2>Starting Budget</h2>
 
+        {/* Allows you to change the budget by typing in a specifc amount (Validation pending) */}
 
+        <input
+          type="number"
+          min="0"
+          value={budget}
+          onChange={(event) => setBudget(Number(event.target.value))}
+        />
       </div>
     </>
-  )
+  );
 }
-
-export default App
+export default App;
