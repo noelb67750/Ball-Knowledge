@@ -1,0 +1,15 @@
+# Ignore Mac system files
+.DS_Store
+
+# Ignore node_modules directory
+node_modules/
+
+#ignore java / maven files
+target/
+*.class
+
+#ignore Idea project files
+.idea/
+
+# ignore database
+*.db
