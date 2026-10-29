@@ -1,3 +1,5 @@
+package ballknowledge;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,10 +17,14 @@ public class Team {
      * Initializes the team class by creating a new dataframe and setting the
      * headers based on the available roster.
      */
-    public Team(){
+       public Team() {
+
         players = new DataFrame();
-        players.setColumns(Importer.getAvailableRoster().getColumns());
+        if (Importer.getAvailableRoster() != null) { 
+            players.setColumns(Importer.getAvailableRoster().getColumns()); 
+        }
     }
+    
 
     /**
      * Sets the name of the team
