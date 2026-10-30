@@ -27,7 +27,19 @@
       <!-- We use 2.0.16 because it matches the slf4j-api version Javalin -->
       <version>2.0.16</version>
     </dependency>
-
+<!--Junit for testing -->
+<dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.10.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>5.10.0</version>
+            <scope>test</scope>
+        </dependency>
 </dependencies>
 
 <properties>
