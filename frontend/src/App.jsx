@@ -1,18 +1,32 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
+
+//reads the server adress in env
+const API = import.meta.env.VITE_API_URL;
 
 function App() {
   const [teams, setTeams] = useState(3);
   const [rounds, setRounds] = useState(10);
   const [budget, setBudget] = useState(200);
 
+  const [serverOk, setServerOK] = useState(null);
+
+
+  //fetches request -> java answers -> converts into java - > updates state
+  useEffect(() => {
+    fetch (`${API}/api/health`)
+    .then((res) => res.json()) 
+    .then((data) => setServerOK(data.ok))
+    .catch(() => setServerOK(false));
+  }, []);
+
   return (
     <>
       <div>
         <h1>Ball Knowledge</h1>
         <p>Draft your favorite players!</p>
+                {/* check for backend connection */}
         <button>Start Draft</button>
-
         <h2>Draft Settings</h2>
         <p>Number of Teams: {teams}</p>
 
