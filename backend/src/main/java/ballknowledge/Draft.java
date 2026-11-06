@@ -11,7 +11,7 @@ import java.util.UUID;
 public class Draft {
     private int numOfTeams;
     private int numOfRounds;
-    private int currentRoundNum;
+    private int currentRoundNum; 
     private String[][] draft;
     private double startingSalary;
     private ArrayList<Team> teams = new ArrayList<>();
@@ -23,11 +23,7 @@ public class Draft {
     public Draft(){
         // Constructor chaining because the other method initiated with empty teams and a null draft table 
         this(3, 10, 500_000_000.0, UUID.randomUUID().toString().substring(0, 4).toUpperCase());        
-        // numOfRounds = 10;
-        // numOfTeams = 3;
-        // startingSalary = 500000000;
-        // this.draftCode = java.util.UUID.randomUUID().toString();  // Generate a unique draft code
-    }
+        }
 
     /**
      * transitions from setup to in_progress
@@ -133,5 +129,8 @@ public class Draft {
     public String getDraftCode()
     {
         return draftCode;
+    }
+    public String[][] getDraftTable() {
+        return draft;
     }
 }

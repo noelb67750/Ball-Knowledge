@@ -35,15 +35,15 @@ needs two terminals open simultaniously
 Term 1: 
 
 ```
-cd Ball-Knowledge/backend
+cd path/to/Ball-Knowledge/backend
 mvn compile exec:java
 ```
 
 Term 2:
 
 ```
-cd Ball-Knowledge/frontend
-npm run dev
+cd path/to/Ball-Knowledge/frontend
+npm run dev 
 ```
 
 then run in your browser

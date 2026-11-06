@@ -5,6 +5,13 @@ import DraftScreen from './DraftScreen'; //importing the draft screen component 
 //reads the server adress in env
 const API = import.meta.env.VITE_API_URL;
 
+/**
+ * 
+ * @returns {JSX.Element} App component
+ * 
+ * contains the main app logic, while intializing the draft settings, state, and connection to backend
+ * 
+ */
 function App() {
   const [teams, setTeams] = useState(3);
   const [rounds, setRounds] = useState(10);
