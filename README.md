@@ -43,7 +43,7 @@ Term 2:
 
 ```
 cd path/to/Ball-Knowledge/frontend
-npm run dev
+npm run dev 
 ```
 
 then run in your browser
