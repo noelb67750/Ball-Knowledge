@@ -88,13 +88,11 @@ public class Team {
                 if (id == playerID) { //Checks whether the ID is valid or not
                     boolean taken = Boolean.parseBoolean(row.get(takenIndex).toString()); //Checks if the player is taken or not
                     if (taken) { //Prints an error message and returns false if the player is already taken
-                        System.out.println("The player has already been drafted.");
                         return false;
                     }
                     double salary = Double.parseDouble(row.get(salaryIndex).toString()); //Gets the cost of a player
 
                     if (budget < salary) { //Checks if the team can buy the player or not
-                        System.out.println("Your team does not have enough money to select this player."); //Prints an error message if the team cannot
                         return false; //Returns false if the team cannot buy the player
                     }
                     row.set(takenIndex, true); //Changes the player's taken status to true

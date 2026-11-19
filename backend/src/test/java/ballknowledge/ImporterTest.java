@@ -29,7 +29,7 @@ public class ImporterTest {
     }
 
     @AfterEach
-    void cleanup() throws Exception {
+    void cleanup()  {
         File folder = new File(DATA_FOLDER);
         File[] files = folder.listFiles();
         if (files != null) {
@@ -55,7 +55,6 @@ public class ImporterTest {
         assertFalse(Files.exists(folderPath));
 
         Importer.initialize();
-        File folder = new File(DATA_FOLDER);
 
         assertTrue(Files.exists(folderPath));
         assertTrue(Files.isDirectory(folderPath));
@@ -64,15 +63,6 @@ public class ImporterTest {
     @org.junit.jupiter.api.Test
     void getSavedFilesEmpty() {
         File[] files = Importer.getSavedFiles();
-
-        assertNotNull(files);
-        assertEquals(0, files.length);
-    }
-
-    @org.junit.jupiter.api.Test
-    void getSavedFilesNull() {
-        File[] files = null;
-        files = Importer.getSavedFiles();
 
         assertNotNull(files);
         assertEquals(0, files.length);

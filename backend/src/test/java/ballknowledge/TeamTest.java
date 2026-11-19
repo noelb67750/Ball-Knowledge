@@ -115,7 +115,7 @@ class TeamTest {
     }
 
     @Test
-    void draftPlayerInsufficentBudget(){
+    void draftPlayerInsufficientBudget(){
         one.setBudget(1);
 
         assertFalse(one.draftPlayer(1));

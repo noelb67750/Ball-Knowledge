@@ -1,5 +1,8 @@
 package ballknowledge;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.BufferedReader;
@@ -20,6 +23,7 @@ import java.util.Arrays;
  */
 public class Importer {
     private static final String DATA_FOLDER = "savedFiles";
+    private static final Logger log = LoggerFactory.getLogger(Importer.class);
     public static DataFrame availableRoster;
 
     /**
@@ -86,7 +90,7 @@ public class Importer {
                 saved += ", " + files[i].toString();
             }
             System.out.println("Files Saved:");
-            System.out.println(saved);
+            log.info(saved);
         }
     }
 
