@@ -26,7 +26,7 @@ def load_dataframe(file_path):
     #For each column based off type fill missing values
     for column in df.columns:
         # Check if the column is any numeric type (int, float, etc.)
-        if pd.api.types.is_numeric_dtype(df[column]):
+        if (pd.api.types.is_numeric_dtype(df[column]) and column != "ID"):
             df[column] = df[column].fillna(0)
         if df[column].dtype == "string":
             df[column] = df[column].fillna("NA")
