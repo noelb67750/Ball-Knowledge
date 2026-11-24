@@ -19,21 +19,25 @@ class TeamTest {
         roster.addColumn("ID");
         roster.addColumn("Name");
         roster.addColumn("Salary");
+        roster.addColumn("OVR");
         roster.addColumn("Taken");
         List<Object> player1 = new ArrayList<>();
         player1.add(1);
         player1.add("LeBron James");
         player1.add(50.0);
+        player1.add(80);
         player1.add(false);
         List<Object> player2 = new ArrayList<>();
         player2.add(2);
         player2.add("Stephen Curry");
         player2.add(40.0);
+        player2.add(85);
         player2.add(true);
         List<Object> player3 = new ArrayList<>();
         player3.add(3);
         player3.add("Kevin Durant");
         player3.add(60.0);
+        player3.add(75);
         player3.add(false);
         roster.addRow(player1);
         roster.addRow(player2);
@@ -177,7 +181,18 @@ class TeamTest {
     @Test
     void getPlayers() {
         assertNotNull(one.getPlayers());
-        assertEquals(4, one.getPlayers().getColumns().size());
+        assertEquals(5, one.getPlayers().getColumns().size());
         assertEquals(0, one.getPlayers().getRows().size());
+    }
+
+    @Test
+    void setTeamOVR(){
+        one.setBudget(10000);
+        one.draftPlayer(1);
+        one.draftPlayer(2);
+        one.draftPlayer(3);
+        one.setTeamOVR();
+        int expected = ((80+75)/2);
+        assertEquals(expected, one.getTeamOVR());
     }
 }

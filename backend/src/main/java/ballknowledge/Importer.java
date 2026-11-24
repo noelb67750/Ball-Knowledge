@@ -166,6 +166,26 @@ public class Importer {
     }
 
     /**
+     *Loads a data frame based off a file.
+     * @param file the file to be used as the data frame for the draft
+     * @return the transformed file as a data frame
+     */
+    public static DataFrame loadDataFrameWithRatings(File file) {
+        try {
+            ProcessBuilder pb = new ProcessBuilder("python", "src/dataframe_converterWRatings.py", file.getAbsolutePath()); //Launches the Python program
+            Process process = pb.start(); //Runs the Python program
+            int exitCode = process.waitFor(); //Waits for Python program to finish running
+            if(exitCode != 0){ //Checks if the Python program was able to run successfully or not
+                throw new RuntimeException("Python script failed."); //Throws exception if it was unsuccessful
+            }
+            return readDataFrameFromCSV(new File("current_dataframe.csv")); //Runs method below to transform and crate the data frame
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null; //Returns null if the data frame failed to be loaded
+        }
+    }
+
+    /**
      * Reads a CSV file and converts it into a java DataFrame
      * @param file the file to be turned into a data frame in java
      * @return the data frame

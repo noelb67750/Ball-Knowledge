@@ -11,7 +11,8 @@ import java.util.List;
 public class Team {
     private String name; //name of team
     private double budget; //budget of team
-    public DataFrame players; //dataframe of players selected
+    public DataFrame players;//dataframe of players selected
+    private int teamOVR;
 
     /**
      * Initializes the team class by creating a new dataframe and setting the
@@ -145,5 +146,30 @@ public class Team {
         return players;
         //System.out.println(players.getColumns());
         //System.out.println(players.getRows());
+    }
+
+    /**
+     * Sets the overall rating for a team based on the current players drafted
+     * assuming there is an overall column and each player has an overall rating.
+     */
+    public void setTeamOVR() {
+        int count = 0;
+        int num = 0;
+        if ((players != null) && (players.getRows().size() >= 2)) {
+            int OVR_index = players.getColumns().indexOf("OVR");
+            for (List<Object> row : players.getRows()) {
+               num += Integer.parseInt(row.get(OVR_index).toString());
+               count++;
+            }
+            teamOVR = num/count;
+        }
+    }
+
+    /**
+     * Returns the current team's overall rating.
+     * @return the current team's overall rating
+     */
+    public int getTeamOVR(){
+        return teamOVR;
     }
 }
