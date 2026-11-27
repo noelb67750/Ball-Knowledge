@@ -9,8 +9,7 @@ const players = [
   { id: 4, name: "Kobe Bryant", position: "SG", price: 5 },
 ];
 
-function DraftScreen({ teams, rounds, budget, onBack }) {
-  // State to keep track of drafted players using an array
+function DraftScreen({ teams, rounds, budget, draftCode, onBack }) {  // State to keep track of drafted players using an array
   const [draftedPlayers, setDraftedPlayers] = useState([]);
   const [currentTeam, setCurrentTeam] = useState(1);
 
@@ -40,7 +39,7 @@ function DraftScreen({ teams, rounds, budget, onBack }) {
     <div>
       <h1>Draft Room</h1>
       <p>Welcome to the draft!</p>
-
+      <p>Draft code: {draftCode}</p>
       <p>Teams: {teams}</p>
       <p>Rounds: {rounds}</p>
       <p>Starting Budget: ${budget}</p>
