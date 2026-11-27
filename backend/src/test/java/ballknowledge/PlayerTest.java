@@ -30,8 +30,15 @@ class PlayerTest {
         player2.add("PG");
         player2.add(40.0);
         player2.add(true);
+        List<Object> player3 = new ArrayList<>();
+        player3.add(-1);
+        player3.add("John Doe");
+        player3.add("NA");
+        player3.add(0);
+        player3.add(false);
         roster.addRow(player1);
         roster.addRow(player2);
+        roster.addRow(player3);
         Importer.setAvailableRoster(roster);
     }
 
@@ -45,6 +52,12 @@ class PlayerTest {
     void findPlayerByIDNotinDF() {
         Player p = new Player();
         assertFalse(p.findPlayerByID(4));
+    }
+
+    @Test
+    void findPlayerByInvalidID() {
+        Player p = new Player();
+        assertFalse(p.findPlayerByID(-1));
     }
 
     @Test

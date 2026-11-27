@@ -38,21 +38,23 @@ public class Player{
      * @return true if the search was successful, false otherwise.
      */
     public boolean findPlayerByID(int ID) {
-        if (Importer.getAvailableRoster() != null) {
-            int idIndex = Importer.availableRoster.getColumns().indexOf("ID"); //Gets the column index for the ID column
-            int nameIndex = Importer.availableRoster.getColumns().indexOf("Player"); //Gets the column index for the Name column
-            int posIndex = Importer.availableRoster.getColumns().indexOf("Pos"); //Gets the column index for the Position column
-            int salaryIndex = Importer.availableRoster.getColumns().indexOf("Salary"); //Gets the column index for the Salary column
+        if(ID > 0) {
+            if (Importer.getAvailableRoster() != null) {
+                int idIndex = Importer.availableRoster.getColumns().indexOf("ID"); //Gets the column index for the ID column
+                int nameIndex = Importer.availableRoster.getColumns().indexOf("Player"); //Gets the column index for the Name column
+                int posIndex = Importer.availableRoster.getColumns().indexOf("Pos"); //Gets the column index for the Position column
+                int salaryIndex = Importer.availableRoster.getColumns().indexOf("Salary"); //Gets the column index for the Salary column
 
-            for (List<Object> row : Importer.availableRoster.getRows()) {
-                int id = Integer.parseInt(row.get(idIndex).toString()); //Checks the ID column for the ID of the player we're looking for
+                for (List<Object> row : Importer.availableRoster.getRows()) {
+                    int id = Integer.parseInt(row.get(idIndex).toString()); //Checks the ID column for the ID of the player we're looking for
 
-                if (id == ID) {//Checks whether the ID is valid or not
-                    this.ID = id;
-                    this.name = row.get(nameIndex).toString();//Gets the name of a player
-                    this.pos = row.get(posIndex).toString();//Gets the position of a player
-                    this.salary = Double.parseDouble(row.get(salaryIndex).toString()); //Gets the cost of a player
-                    return true;
+                    if (id == ID) {//Checks whether the ID is valid or not
+                        this.ID = id;
+                        this.name = row.get(nameIndex).toString();//Gets the name of a player
+                        this.pos = row.get(posIndex).toString();//Gets the position of a player
+                        this.salary = Double.parseDouble(row.get(salaryIndex).toString()); //Gets the cost of a player
+                        return true;
+                    }
                 }
             }
         }

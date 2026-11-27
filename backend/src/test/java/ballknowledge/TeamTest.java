@@ -39,9 +39,16 @@ class TeamTest {
         player3.add(60.0);
         player3.add(75);
         player3.add(false);
+        List<Object> player4 = new ArrayList<>();
+        player4.add(-1);
+        player4.add("Jane Doe");
+        player4.add(0);
+        player4.add(0);
+        player4.add(false);
         roster.addRow(player1);
         roster.addRow(player2);
         roster.addRow(player3);
+        roster.addRow(player4);
         Importer.setAvailableRoster(roster);
         one = new Team();
     }
@@ -115,6 +122,14 @@ class TeamTest {
         one.setBudget(10000);
 
         assertFalse(one.draftPlayer(542));
+        assertEquals(0, one.getPlayers().getRows().size());
+    }
+
+    @Test
+    void draftPlayerFilledInvalidID(){
+        one.setBudget(10000);
+
+        assertFalse(one.draftPlayer(-1));
         assertEquals(0, one.getPlayers().getRows().size());
     }
 

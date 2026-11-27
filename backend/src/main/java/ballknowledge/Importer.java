@@ -100,7 +100,7 @@ public class Importer {
     public static File[] getSavedFiles() {
         File folder = new File(DATA_FOLDER); //Creates File object that represents the folder containing all the saved files
         File[] files = folder.listFiles(); //Gets all the files in the folder
-        if (files == null) {
+        if (files == null || files.length == 0) {
             return new File[0]; //Returns an empty file array, ex. []
         }
         return files; //Returns array of files found

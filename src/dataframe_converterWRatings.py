@@ -26,9 +26,11 @@ def load_dataframe(file_path):
     #For each column based off type fill missing values
     for column in df.columns:
         # Check if the column is any numeric type (int, float, etc.)
+        if (column == "ID"):
+            df[column] = df[column].fillna(-1)
         if (pd.api.types.is_numeric_dtype(df[column]) and column != "ID"):
             df[column] = df[column].fillna(0)
-        if (df[column].dtype == "object" or column == "ID"):
+        if (df[column].dtype == "object"):
             df[column] = df[column].fillna("NA")
 
     df["Taken"] = False
@@ -39,6 +41,7 @@ def calculate_ratings(df):
     stats = ['MP', 'FG', 'FGA', 'FG%',
              '3P', '3PA', '3P%', '2P', '2PA', '2P%', 'eFG%', 'FT', 'FTA', 'FT%',
              'ORB', 'DRB', 'TRB', 'AST', 'STL', 'BLK', 'TOV', 'PF', 'PTS']
+    positions = ['PG', 'SG', 'SF', 'PF', 'C']
 
     #For each stat get a percentile score based on a player's position
     for stat in stats:
@@ -106,6 +109,8 @@ def calculate_ratings(df):
             + 0.05 * df['DRB_pct']
             + 0.03 * df['MP_pct']
     )
+
+    df.loc[~df['Pos'].isin(positions), 'OVR_Score'] = 0
 
     #Get the minimum and maximum overall score
     min_score = df['OVR_Score'].min()

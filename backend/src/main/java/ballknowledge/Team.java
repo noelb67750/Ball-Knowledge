@@ -78,31 +78,33 @@ public class Team {
      * @return Returns true if the team is able to draft the player, false otherwise
      */
     public boolean draftPlayer(int playerID) {
-        if(Importer.getAvailableRoster() != null) {
-            int idIndex = Importer.availableRoster.getColumns().indexOf("ID"); //Gets the column index for the ID column
-            int takenIndex = Importer.availableRoster.getColumns().indexOf("Taken"); //Gets the column index for the Taken column
-            int salaryIndex = Importer.availableRoster.getColumns().indexOf("Salary"); //Gets the column index for the Salary column
+        if (playerID > 0) {
+            if (Importer.getAvailableRoster() != null) {
+                int idIndex = Importer.availableRoster.getColumns().indexOf("ID"); //Gets the column index for the ID column
+                int takenIndex = Importer.availableRoster.getColumns().indexOf("Taken"); //Gets the column index for the Taken column
+                int salaryIndex = Importer.availableRoster.getColumns().indexOf("Salary"); //Gets the column index for the Salary column
 
-            for (List<Object> row : Importer.availableRoster.getRows()) {
-                int id = Integer.parseInt(row.get(idIndex).toString()); //Checks the ID column for the ID of the player we're looking for
+                for (List<Object> row : Importer.availableRoster.getRows()) {
+                    int id = Integer.parseInt(row.get(idIndex).toString()); //Checks the ID column for the ID of the player we're looking for
 
-                if (id == playerID) { //Checks whether the ID is valid or not
-                    boolean taken = Boolean.parseBoolean(row.get(takenIndex).toString()); //Checks if the player is taken or not
-                    if (taken) { //Prints an error message and returns false if the player is already taken
-                        return false;
+                    if (id == playerID) { //Checks whether the ID is valid or not
+                        boolean taken = Boolean.parseBoolean(row.get(takenIndex).toString()); //Checks if the player is taken or not
+                        if (taken) { //Prints an error message and returns false if the player is already taken
+                            return false;
+                        }
+                        double salary = Double.parseDouble(row.get(salaryIndex).toString()); //Gets the cost of a player
+
+                        if (budget < salary) { //Checks if the team can buy the player or not
+                            return false; //Returns false if the team cannot buy the player
+                        }
+                        row.set(takenIndex, true); //Changes the player's taken status to true
+                        players.getRows().add(new ArrayList<>(row)); //Adds the row to the teams dataframe
+                        this.changeBudget(-salary); //Updates the teams budget based on the cost of the player
+                        return true; //Returns true due to a successfully drafting a player
                     }
-                    double salary = Double.parseDouble(row.get(salaryIndex).toString()); //Gets the cost of a player
-
-                    if (budget < salary) { //Checks if the team can buy the player or not
-                        return false; //Returns false if the team cannot buy the player
-                    }
-                    row.set(takenIndex, true); //Changes the player's taken status to true
-                    players.getRows().add(new ArrayList<>(row)); //Adds the row to the teams dataframe
-                    this.changeBudget(-salary); //Updates the teams budget based on the cost of the player
-                    return true; //Returns true due to a successfully drafting a player
                 }
+                System.out.println("That ID does not exist."); //Prints an error message since the ID is not valid
             }
-            System.out.println("That ID does not exist."); //Prints an error message since the ID is not valid
         }
         return false; //Returns false due to not being able to draft a player
     }
