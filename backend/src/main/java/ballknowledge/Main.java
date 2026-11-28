@@ -15,14 +15,20 @@ public class Main {
         Importer.setAvailableRoster(roster);
         Importer.getNamedSavedFiles();
         Importer.getSavedFiles();
-        if (file != null) {
-            Team test = new Team();
-            test.setBudget(1000000000);
-            test.removePlayer(16010);
-            test.getPlayers();
-            System.out.println(Importer.getAvailableRoster().getColumns());
-            System.out.println(Importer.getAvailableRoster().getRows());
-            }
+        Player p = new Player();
+        p.findPlayerByID(1);
+        System.out.println(p.getID());
+        System.out.println(p.getName());
+        System.out.println(p.getPos());
+        System.out.println(p.getSalary());
+//        if (file != null) {
+//            Team test = new Team();
+//            test.setBudget(1000000000);
+//            test.removePlayer(16010);
+//            test.getPlayers();
+//            System.out.println(Importer.getAvailableRoster().getColumns());
+//            System.out.println(Importer.getAvailableRoster().getRows());
+//            }
 
     }
 }

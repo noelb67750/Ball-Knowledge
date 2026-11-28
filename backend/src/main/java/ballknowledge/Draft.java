@@ -20,7 +20,7 @@ public class Draft {
     /**
      * Create a default draft with 10 rounds, three teams, and a starting budget of 500 million dollars
      */
-    public Draft(){
+    public Draft(int i, int i1, int i2){
         // Constructor chaining because the other method initiated with empty teams and a null draft table 
         this(3, 10, 500_000_000.0, UUID.randomUUID().toString().substring(0, 4).toUpperCase());        
         // numOfRounds = 10;
@@ -119,11 +119,14 @@ public class Draft {
 
     /**
      * Prints the names of all the current teams.
+     *
+     * @return
      */
-    public void getTeamNames(){
-        for (int i = 0; i < teams.size() ; i++) {
-            System.out.println(teams.get(i));
-        }
+    public ArrayList<Team> getTeams(){
+        //for (int i = 0; i < teams.size() ; i++) {
+            //System.out.println(teams.get(i));
+        //}
+        return teams;
     }
 
     public DraftStatus getStatus(){

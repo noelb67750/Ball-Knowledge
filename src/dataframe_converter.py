@@ -22,6 +22,17 @@ def load_dataframe(file_path):
 
     else:
         raise Exception("Unsupported file type")
+
+    #For each column based off type fill missing values
+    for column in df.columns:
+        # Check if the column is any numeric type (int, float, etc.)
+        if (column == "ID"):
+            df[column] = df[column].fillna(-1)
+        if (pd.api.types.is_numeric_dtype(df[column]) and column != "ID"):
+            df[column] = df[column].fillna(0)
+        if (df[column].dtype == "object"):
+            df[column] = df[column].fillna("NA")
+
     df["Taken"] = False
     return df
 

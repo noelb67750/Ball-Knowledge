@@ -1,5 +1,8 @@
 package ballknowledge;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.BufferedReader;
@@ -20,6 +23,7 @@ import java.util.Arrays;
  */
 public class Importer {
     private static final String DATA_FOLDER = "savedFiles";
+    private static final Logger log = LoggerFactory.getLogger(Importer.class);
     public static DataFrame availableRoster;
 
     /**
@@ -72,12 +76,12 @@ public class Importer {
     }
 
     /**
-     * Returns a string of all the names of files in the savedFiles folder
+     * Prints all the names of files in the savedFiles folder
      */
     public static void getNamedSavedFiles() {
         File folder = new File(DATA_FOLDER); //Creates File object that represents the folder containing all the saved files
         File[] files = folder.listFiles(); //Gets all the files in the folder
-        if (files.length == 0) {
+        if (files.length == 0 || files == null) {
             System.out.print("No files saved"); //Prints out a message if the folder is empty
         } else { //If the folder isn't empty, runs a for loop to get the names of all the files in the folder
             //One thing to note is that the names of each file also contains the path of each file. ex. savedFiles\<name of file>
@@ -86,7 +90,7 @@ public class Importer {
                 saved += ", " + files[i].toString();
             }
             System.out.println("Files Saved:");
-            System.out.println(saved);
+            log.info(saved);
         }
     }
 
@@ -96,7 +100,7 @@ public class Importer {
     public static File[] getSavedFiles() {
         File folder = new File(DATA_FOLDER); //Creates File object that represents the folder containing all the saved files
         File[] files = folder.listFiles(); //Gets all the files in the folder
-        if (files == null) {
+        if (files == null || files.length == 0) {
             return new File[0]; //Returns an empty file array, ex. []
         }
         return files; //Returns array of files found
@@ -147,19 +151,39 @@ public class Importer {
      * @return the transformed file as a data frame
      */
     public static DataFrame loadDataFrame(File file) {
-            try {
-                ProcessBuilder pb = new ProcessBuilder("python", "src/dataframe_converter.py", file.getAbsolutePath()); //Launches the Python program
-                Process process = pb.start(); //Runs the Python program
-                int exitCode = process.waitFor(); //Waits for Python program to finish running
-                if(exitCode != 0){ //Checks if the Python program was able to run successfully or not
-                    throw new RuntimeException("Python script failed."); //Throws exception if it was unsuccessful
-                }
-                return readDataFrameFromCSV(new File("current_dataframe.csv")); //Runs method below to transform and crate the data frame
-            } catch (Exception e) {
-                e.printStackTrace();
-                return null; //Returns null if the data frame failed to be loaded
+        try {
+            ProcessBuilder pb = new ProcessBuilder("python", "src/dataframe_converter.py", file.getAbsolutePath()); //Launches the Python program
+            Process process = pb.start(); //Runs the Python program
+            int exitCode = process.waitFor(); //Waits for Python program to finish running
+            if(exitCode != 0){ //Checks if the Python program was able to run successfully or not
+                throw new RuntimeException("Python script failed."); //Throws exception if it was unsuccessful
             }
+            return readDataFrameFromCSV(new File("current_dataframe.csv")); //Runs method below to transform and crate the data frame
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null; //Returns null if the data frame failed to be loaded
         }
+    }
+
+    /**
+     *Loads a data frame based off a file.
+     * @param file the file to be used as the data frame for the draft
+     * @return the transformed file as a data frame
+     */
+    public static DataFrame loadDataFrameWithRatings(File file) {
+        try {
+            ProcessBuilder pb = new ProcessBuilder("python", "src/dataframe_converterWRatings.py", file.getAbsolutePath()); //Launches the Python program
+            Process process = pb.start(); //Runs the Python program
+            int exitCode = process.waitFor(); //Waits for Python program to finish running
+            if(exitCode != 0){ //Checks if the Python program was able to run successfully or not
+                throw new RuntimeException("Python script failed."); //Throws exception if it was unsuccessful
+            }
+            return readDataFrameFromCSV(new File("current_dataframe.csv")); //Runs method below to transform and crate the data frame
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null; //Returns null if the data frame failed to be loaded
+        }
+    }
 
     /**
      * Reads a CSV file and converts it into a java DataFrame
@@ -172,7 +196,7 @@ public class Importer {
             String line;
             boolean firstRow = true; //Tracks if the header row is being read or not
             while ((line = reader.readLine()) != null) { //Reads the file one line at a time
-                String[] values = line.split(","); //Splits the line at every comma
+                String[] values = line.split(",", -1); //Splits the line at every comma
                 if (firstRow) { //First row becomes the columns of the data frame
                     for (String value : values) {
                         df.getColumns().add(value);
