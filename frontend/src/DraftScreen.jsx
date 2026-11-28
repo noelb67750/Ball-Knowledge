@@ -96,143 +96,169 @@ function DraftScreen({ teams, rounds, budget, draftCode, onBack }) {
   const roundNumbers = Array.from({ length: rounds }, (_, index) => index + 1);
 
   return (
-    // Draft Screen: displays the draft room with the list of players, their positions, and prices.
-    <div>
-      <h1>Draft Room</h1>
-      <p>Welcome to the draft!</p>
-      <p>Draft code: {draftCode}</p>
-      <p>Teams: {teams}</p>
-      <p>Rounds: {rounds}</p>
-      <p>Starting Budget: ${budget}</p>
+    // Draft Screen: displays the draft room
+    <div className="draft-room">
 
-      <p>
-        Round: {Math.min(currentRound, rounds)} / {rounds}
-      </p>
-      <p>
-        Completed Picks: {currentPick} / {totalPicks}
-      </p>
+      {/* Draft information */}
+      <header className="draft-header">
+        <h1>Draft Room</h1>
+        <p>Welcome to the draft!</p>
+        <p>Draft code: {draftCode}</p>
+        <p>Teams: {teams}</p>
+        <p>Rounds: {rounds}</p>
+        <p>Starting Budget: ${budget}</p>
 
-      {draftComplete ? (
-        <h2>Draft Complete!</h2>
-      ) : (
-        <>
-          <h2>Team {currentTeam}'s Turn</h2>
-          <p>Remaining Budget: ${remainingBudget}</p>
-        </>
-      )}
+        <p>
+          Round: {Math.min(currentRound, rounds)} / {rounds}
+        </p>
+        <p>
+          Completed Picks: {currentPick} / {totalPicks}
+        </p>
+      </header>
 
-      {/* Display the list of players, position, and price, along with a button to select each player */}
-      <h2>Make Your Pick</h2>
+      {/* Container for the draft board and sidebar */}
+      <div className="draft-layout">
 
-      {/* Form to draft a player using their ID */}
-      <form onSubmit={selectPlayer}>
-        <label htmlFor="playerId">Player ID: </label>
+        {/* Main content */}
+        <main className="draft-main">
+          <h2>Draft Board</h2>
 
-        <input
-          id="playerId"
-          type="number"
-          min="1"
-          step="1"
-          value={playerId}
-          onChange={(event) => setPlayerId(event.target.value)}
-          placeholder="Enter player ID"
-          disabled={draftComplete}
-          required
-        />
+          {/* Display the draft board with rounds and teams */}
+          <table className="draft-board">
+            <thead>
+              <tr>
+                <th>Round</th>
 
-        <button type="submit" disabled={draftComplete}>
-          Confirm Pick
-        </button>
-      </form>
+                {/* Create a column for each team */}
+                {teamNumbers.map((team) => (
+                  <th key={team}>Team {team}</th>
+                ))}
+              </tr>
+            </thead>
 
-      {/* Display an error message if the pick is invalid */}
-      {error && <p role="alert">{error}</p>}
+            <tbody>
+              {/* Create a row for each round */}
+              {roundNumbers.map((round) => (
+                <tr key={round}>
+                  <th>
+                    {round} {round % 2 === 1 ? "→" : "←"}
+                  </th>
 
-      <h2>Draft Board</h2>
+                  {/* Create a draft cell for each team */}
+                  {teamNumbers.map((team) => {
+                    const player = draftedPlayers.find(
+                      (p) => p.team === team && p.round === round
+                    );
 
-      {/* Display the draft board with rounds and teams */}
-      <table className="draft-board">
-        <thead>
-          <tr>
-            <th>Round</th>
+                    // Check if this cell represents the current pick
+                    const isActive =
+                      !draftComplete &&
+                      team === currentTeam &&
+                      round === currentRound;
 
-            {/* Create a column for each team */}
+                    return (
+                      <td
+                        key={team}
+                        className={isActive ? "active-pick" : ""}
+                      >
+                        {player ? (
+                          <>
+                            <strong>{player.name}</strong>
+                            <p>
+                              {player.position} - ${player.price}
+                            </p>
+                          </>
+                        ) : isActive ? (
+                          "On the Clock"
+                        ) : (
+                          "—"
+                        )}
+                      </td>
+                    );
+                  })}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </main>
+
+        {/* Sidebar containing draft controls and information */}
+        <aside className="draft-sidebar">
+
+          {/* Player selection panel */}
+          <section className="pick-panel">
+            {draftComplete ? (
+              <h2>Draft Complete!</h2>
+            ) : (
+              <>
+                <h2>Team {currentTeam}'s Turn</h2>
+                <p>Remaining Budget: ${remainingBudget}</p>
+              </>
+            )}
+
+            <h2>Make Your Pick</h2>
+
+            {/* Form to draft a player using their ID */}
+            <form onSubmit={selectPlayer}>
+              <label htmlFor="playerId">Player ID: </label>
+
+              <input
+                id="playerId"
+                type="number"
+                min="1"
+                step="1"
+                value={playerId}
+                onChange={(event) =>
+                  setPlayerId(event.target.value)
+                }
+                placeholder="Enter player ID"
+                disabled={draftComplete}
+                required
+              />
+
+              <button type="submit" disabled={draftComplete}>
+                Confirm Pick
+              </button>
+            </form>
+
+            {/* Display an error message if the pick is invalid */}
+            {error && <p role="alert">{error}</p>}
+          </section>
+
+          {/* Display the remaining budget for every team */}
+          <section className="budget-panel">
+            <h2>Team Budgets</h2>
+
             {teamNumbers.map((team) => (
-              <th key={team}>Team {team}</th>
+              <div
+                key={team}
+                className={team === currentTeam ? "active-team" : ""}
+              >
+                <h3>Team {team}</h3>
+                <p>Remaining Budget: ${getRemainingBudget(team)}</p>
+              </div>
             ))}
-          </tr>
-        </thead>
+          </section>
 
-        <tbody>
-          {/* Create a row for each round */}
-          {roundNumbers.map((round) => (
-            <tr key={round}>
-              <th>
-                {round} {round % 2 === 1 ? "→" : "←"}
-              </th>
+          {/* Display the IDs of players who have already been drafted */}
+          <section className="taken-players">
+            <h2>Taken Player IDs</h2>
 
-              {/* Create a draft cell for each team */}
-              {teamNumbers.map((team) => {
-                const player = draftedPlayers.find(
-                  (p) => p.team === team && p.round === round
-                );
+            {draftedPlayers.length === 0 ? (
+              <p>No players drafted yet.</p>
+            ) : (
+              <div className="taken-ids">
+                {draftedPlayers.map((player) => (
+                  <span key={player.id}>#{player.id} </span>
+                ))}
+              </div>
+            )}
 
-                // Check if this cell represents the current pick
-                const isActive =
-                  !draftComplete &&
-                  team === currentTeam &&
-                  round === currentRound;
+            <p>{draftedPlayers.length} players drafted</p>
+          </section>
 
-                return (
-                  <td key={team} className={isActive ? "active-pick" : ""}>
-                    {player ? (
-                      <>
-                        <strong>{player.name}</strong>
-                        <p>
-                          {player.position} - ${player.price}
-                        </p>
-                      </>
-                    ) : isActive ? (
-                      "On the Clock"
-                    ) : (
-                      "—"
-                    )}
-                  </td>
-                );
-              })}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-
-      {/* Display the remaining budget for every team */}
-      <section className="budget-panel">
-        <h2>Team Budgets</h2>
-
-        {teamNumbers.map((team) => (
-          <div key={team} className={team === currentTeam ? "active-team" : ""}>
-            <h3>Team {team}</h3>
-            <p>Remaining Budget: ${getRemainingBudget(team)}</p>
-          </div>
-        ))}
-      </section>
-
-      {/* Display the IDs of players who have already been drafted */}
-      <section className="taken-players">
-        <h2>Taken Player IDs</h2>
-
-        {draftedPlayers.length === 0 ? (
-          <p>No players drafted yet.</p>
-        ) : (
-          <div className="taken-ids">
-            {draftedPlayers.map((player) => (
-              <span key={player.id}>#{player.id} </span>
-            ))}
-          </div>
-        )}
-
-        <p>{draftedPlayers.length} players drafted</p>
-      </section>
+        </aside>
+      </div>
 
       {/* Button that allows you to go back to the settings screen once clicked */}
       <button onClick={onBack}>Back to Settings</button>
